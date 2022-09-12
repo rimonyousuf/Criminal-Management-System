@@ -141,6 +141,55 @@ class Criminal:
         txt_fatherName=ttk.Entry(upper_frame,width=22,font=('arial',11,'bold'))
         txt_fatherName.grid(row=1,column=5,padx=2,pady=7)
 
+        #Gender
+        lbl_gender=Label(upper_frame,font=('arial',12,'bold'),text='Gender:',bg='white')
+        lbl_gender.grid(row=2,column=4,sticky=W,padx=2,pady=7)
+
+        #Wanted
+        lbl_wanted=Label(upper_frame,font=('arial',12,'bold'),text='Most Wanted:',bg='white')
+        lbl_wanted.grid(row=3,column=4,sticky=W,padx=2,pady=7)
+
+        #Radio Button Gender
+        radio_frame_gender=Label(upper_frame,bd=2,relief=RIDGE,bg='white')
+        radio_frame_gender.place(x=730,y=83,width=185,height=25)
+
+        male=Radiobutton(radio_frame_gender,text='Male',value='male',font=('arial',9,'bold'),bg='white')
+        male.grid(row=0,column=0,pady=2,padx=5,sticky=W)
+
+        female=Radiobutton(radio_frame_gender,text='Female',value='female',font=('arial',9,'bold'),bg='white')
+        female.grid(row=0,column=1,pady=2,padx=5,sticky=W)
+
+
+        #Radio Button Wanted
+        radio_frame_wanted=Label(upper_frame,bd=2,relief=RIDGE,bg='white')
+        radio_frame_wanted.place(x=730,y=123,width=185,height=25)
+
+        yes=Radiobutton(radio_frame_wanted,text='Yes',value='yes',font=('arial',9,'bold'),bg='white')
+        yes.grid(row=0,column=0,pady=2,padx=5,sticky=W)
+
+        no=Radiobutton(radio_frame_wanted,text='No',value='no',font=('arial',9,'bold'),bg='white')
+        no.grid(row=0,column=1,pady=2,padx=5,sticky=W)
+
+        #Button
+        button_frame=Frame(upper_frame,bd=2,relief=RIDGE,bg='white')
+        button_frame.place(x=5,y=200,width=628,height=45)
+
+        #Add Button
+        btn_add=Button(button_frame,text='Record Save',font=('arial',13,'bold'),width=14,bg='blue',fg='white')
+        btn_add.grid(row=0,column=0,padx=3,pady=5)
+
+        #Update Button
+        btn_update=Button(button_frame,text='Update',font=('arial',13,'bold'),width=14,bg='blue',fg='white')
+        btn_update.grid(row=0,column=1,padx=3,pady=5)
+
+        #Delete Button
+        btn_delete=Button(button_frame,text='Delete',font=('arial',13,'bold'),width=14,bg='blue',fg='white')
+        btn_delete.grid(row=0,column=2,padx=3,pady=5)
+
+        #Clear Button
+        btn_clear=Button(button_frame,text='Clear',font=('arial',13,'bold'),width=14,bg='blue',fg='white')
+        btn_clear.grid(row=0,column=3,padx=3,pady=5)
+
 
 
 
