@@ -1,2 +1,1 @@
-![1](https://user-images.githubusercontent.com/81034032/189553726-d914f98b-5491-45d4-bf50-80df58deed87.jpg)
-# Criminal-Management-System
+![2](https://user-images.githubusercontent.com/81034032/189560499-e025676c-41ac-45b1-a786-af48e2e8ae9f.jpg)
