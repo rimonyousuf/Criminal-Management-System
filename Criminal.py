@@ -13,7 +13,7 @@ class Criminal:
         lbl_title.place(x=0,y=0,width=1366,height=70)
 
         #Logo Image
-        img_logo=Image.open('img/logo.jpg')
+        img_logo=Image.open(r'G:\Rimon Study\Criminal Management System\img\logo.jpg')
         img_logo=img_logo.resize((60,60),Image.ANTIALIAS)
         self.photo_logo=ImageTk.PhotoImage(img_logo)
 
@@ -24,7 +24,7 @@ class Criminal:
         img_frame=Frame(self.root,bd=2,relief=RIDGE,bg='white')
         img_frame.place(x=0,y=70,width=1366,height=130)
 
-        img1=Image.open('img/1.jpg')
+        img1=Image.open(r'G:\Rimon Study\Criminal Management System\img\1.jpg')
         img1=img1.resize((455,160),Image.ANTIALIAS)
         self.photo1=ImageTk.PhotoImage(img1)
 
@@ -32,7 +32,7 @@ class Criminal:
         self.img_1.place(x=0,y=0,width=455,height=160)
 
         #2nd image
-        img2=Image.open('img/2.jpg')
+        img2=Image.open(r'G:\Rimon Study\Criminal Management System\img\2.jpg')
         img2=img2.resize((455,160),Image.ANTIALIAS)
         self.photo2=ImageTk.PhotoImage(img2)
 
@@ -40,7 +40,7 @@ class Criminal:
         self.img_2.place(x=455,y=0,width=455,height=160)
 
         #3rd image
-        img3=Image.open('img/3.jpg')
+        img3=Image.open(r'G:\Rimon Study\Criminal Management System\img\3.jpg')
         img3=img3.resize((456,160),Image.ANTIALIAS)
         self.photo3=ImageTk.PhotoImage(img3)
 
@@ -190,6 +190,14 @@ class Criminal:
         btn_clear=Button(button_frame,text='Clear',font=('arial',13,'bold'),width=14,bg='blue',fg='white')
         btn_clear.grid(row=0,column=3,padx=3,pady=5)
 
+        #Background right side 
+        img4=Image.open(r'G:\Rimon Study\Criminal Management System\img\4.jpg')
+        img4=img4.resize((420,245),Image.ANTIALIAS)
+        self.photo4=ImageTk.PhotoImage(img4)
+
+        self.img_4=Label(upper_frame,image=self.photo4)
+        self.img_4.place(x=940,y=0,width=420,height=245)
+
 
 
 
@@ -201,6 +209,84 @@ class Criminal:
 
         search_frame=LabelFrame(lower_frame,bd=2,relief=RIDGE,text='Search Criminal Record',font=('times new roman',11,'bold'),fg='red',bg='white')
         search_frame.place(x=0,y=0,width=1315,height=60)
+
+        #Search by
+        search_by=Label(search_frame,font=('arial',11,'bold'),text='Search by',bg='red',fg='white')
+        search_by.grid(row=0,column=0,sticky=W,padx=5)
+
+        #Combo Search Box
+        cmbo_bx=ttk.Combobox(search_frame,font=('arial',11,'bold'),width=18,state='readonly')
+        cmbo_bx['value']=('Select Option','Case ID','Criminal No')
+        cmbo_bx.current(0)
+        cmbo_bx.grid(row=0,column=1,sticky=W,padx=5)
+
+        #Search Box
+        search_txt=ttk.Entry(search_frame,font=('arial',11,'bold'))
+        search_txt.grid(row=0,column=2,sticky=W,padx=5)
+
+        #Search Button
+        btn_search=Button(search_frame,text='Search',font=('arial',13,'bold'),width=14,bg='blue',fg='white')
+        btn_search.grid(row=0,column=3,padx=3,pady=5)
+
+        #All Button
+        btn_all=Button(search_frame,text='Show All',font=('arial',13,'bold'),width=14,bg='blue',fg='white')
+        btn_all.grid(row=0,column=4,padx=3,pady=5)
+
+        #National Crime Agency
+        crime_agency=Label(search_frame,font=('arial',20,'bold'),text='National Crime Agency',bg='white',fg='crimson')
+        crime_agency.grid(row=0,column=5,sticky=W,padx=70)
+
+        #Table Frame
+        table_frame=Frame(lower_frame,bd=2,relief=RIDGE)
+        table_frame.place(x=0,y=60,width=1315,height=130)
+
+        #Scroll
+        scroll_x=ttk.Scrollbar(table_frame,orient=HORIZONTAL)
+        scroll_y=ttk.Scrollbar(table_frame,orient=VERTICAL)
+
+        self.criminal_table=ttk.Treeview(table_frame,column=('1','2','3','4','5','6','7','8','9','10','11','12','13','14'),xscrollcommand=scroll_x.set,yscrollcommand=scroll_y.set)
+
+        scroll_x.pack(side=BOTTOM,fill=X)
+        scroll_y.pack(side=RIGHT,fill=Y)
+
+        scroll_x.config(command=self.criminal_table.xview)
+        scroll_y.config(command=self.criminal_table.yview)
+
+        #Table header
+        self.criminal_table.heading('1',text='Case ID')
+        self.criminal_table.heading('2',text='Crime No')
+        self.criminal_table.heading('3',text='Criminal Name')
+        self.criminal_table.heading('4',text='Nickname')
+        self.criminal_table.heading('5',text='Arrest Date')
+        self.criminal_table.heading('6',text='Crime Date')
+        self.criminal_table.heading('7',text='Address')
+        self.criminal_table.heading('8',text='Age')
+        self.criminal_table.heading('9',text='Occupation')
+        self.criminal_table.heading('10',text='Birth Mark')
+        self.criminal_table.heading('11',text='Crime Type')
+        self.criminal_table.heading('12',text='Father Name')
+        self.criminal_table.heading('13',text='Gender')
+        self.criminal_table.heading('14',text='Wanted')
+
+        self.criminal_table['show']='headings'
+
+        self.criminal_table.column('1',width=93)
+        self.criminal_table.column('2',width=93)
+        self.criminal_table.column('3',width=93)
+        self.criminal_table.column('4',width=93)
+        self.criminal_table.column('5',width=93)
+        self.criminal_table.column('6',width=93)
+        self.criminal_table.column('7',width=93)
+        self.criminal_table.column('8',width=93)
+        self.criminal_table.column('9',width=93)
+        self.criminal_table.column('10',width=93)
+        self.criminal_table.column('11',width=93)
+        self.criminal_table.column('12',width=93)
+        self.criminal_table.column('13',width=93)
+        self.criminal_table.column('14',width=93)
+
+        self.criminal_table.pack(fill=BOTH,expand=1)
+
 
 
 
