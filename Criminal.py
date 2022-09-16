@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 from PIL import Image,ImageTk
+import sqlite3
+from tkinter import messagebox
 
 
 class Criminal:
@@ -8,6 +10,23 @@ class Criminal:
         self.root=root
         self.root.geometry('1366x768+0+0')
         self.root.title('CRIMINAL MANAGEMENT SYSTEM')
+
+        #Variables
+        self.var_case_id=StringVar()
+        self.var_criminal_no=StringVar()
+        self.var_name=StringVar()
+        self.var_nickname=StringVar()
+        self.var_arrest_date=StringVar()
+        self.var_date_of_crime=StringVar()
+        self.var_address=StringVar()
+        self.var_age=StringVar()
+        self.var_occupation=StringVar()
+        self.var_birth_mark=StringVar()
+        self.var_crime_type=StringVar()
+        self.var_father_name=StringVar()
+        self.var_gender=StringVar()
+        self.var_wanted=StringVar()
+
 
         lbl_title=Label(self.root,text='CRIMINAL MANAGEMENT SYSTEM',font=('times new roman',40,'bold'),bg='black',fg='gold')
         lbl_title.place(x=0,y=0,width=1366,height=70)
@@ -61,102 +80,98 @@ class Criminal:
         caseid=Label(upper_frame,text='Case ID:',font=('arial',11,'bold'),bg='white')
         caseid.grid(row=0,column=0,padx=2,sticky=W)
 
-        caseentry=ttk.Entry(upper_frame,width=22,font=('arial',11,'bold'))
+        caseentry=ttk.Entry(upper_frame,textvariable=self.var_case_id,width=22,font=('arial',11,'bold'))
         caseentry.grid(row=0,column=1,padx=2,sticky=W)
 
         #Criminal No
         lbl_criminal_no=Label(upper_frame,font=('arial',12,'bold'),text='Crminal No:',bg='white')
         lbl_criminal_no.grid(row=0,column=2,padx=2,pady=7,sticky=W)
 
-        txt_criminal_no=ttk.Entry(upper_frame,width=22,font=('arial',11,'bold'))
+        txt_criminal_no=ttk.Entry(upper_frame,textvariable=self.var_criminal_no,width=22,font=('arial',11,'bold'))
         txt_criminal_no.grid(row=0,column=3,padx=2,pady=7)
 
         #Criminal Name
         lbl_Name=Label(upper_frame,font=('arial',12,'bold'),text='Crminal Name:',bg='white')
         lbl_Name.grid(row=1,column=0,padx=2,pady=7,sticky=W)
 
-        txt_Name=ttk.Entry(upper_frame,width=22,font=('arial',11,'bold'))
+        txt_Name=ttk.Entry(upper_frame,textvariable=self.var_name,width=22,font=('arial',11,'bold'))
         txt_Name.grid(row=1,column=1,padx=2,pady=7,sticky=W)
 
         #Nick Name
         lbl_nickname=Label(upper_frame,font=('arial',12,'bold'),text='Nickname:',bg='white')
         lbl_nickname.grid(row=1,column=2,padx=2,pady=7,sticky=W)
 
-        txt_nickname=ttk.Entry(upper_frame,width=22,font=('arial',11,'bold'))
+        txt_nickname=ttk.Entry(upper_frame,textvariable=self.var_nickname,width=22,font=('arial',11,'bold'))
         txt_nickname.grid(row=1,column=3,padx=2,pady=7)
 
         #Arrest Date
         lbl_arrestDate=Label(upper_frame,font=('arial',12,'bold'),text='Arrest Date:',bg='white')
         lbl_arrestDate.grid(row=2,column=0,padx=2,pady=7,sticky=W)
 
-        txt_arrestDate=ttk.Entry(upper_frame,width=22,font=('arial',11,'bold'))
+        txt_arrestDate=ttk.Entry(upper_frame,textvariable=self.var_arrest_date,width=22,font=('arial',11,'bold'))
         txt_arrestDate.grid(row=2,column=1,padx=2,pady=7)
 
         #Date of Crime
         lbl_dateOfCrime=Label(upper_frame,font=('arial',12,'bold'),text='Date of Crime:',bg='white')
         lbl_dateOfCrime.grid(row=2,column=2,padx=2,pady=7,sticky=W)
 
-        txt_dateOfCrime=ttk.Entry(upper_frame,width=22,font=('arial',11,'bold'))
+        txt_dateOfCrime=ttk.Entry(upper_frame,textvariable=self.var_date_of_crime,width=22,font=('arial',11,'bold'))
         txt_dateOfCrime.grid(row=2,column=3,padx=2,pady=7,sticky=W)
 
         #Address
         lbl_address=Label(upper_frame,font=('arial',12,'bold'),text='Address:',bg='white')
         lbl_address.grid(row=3,column=0,padx=2,pady=7,sticky=W)
 
-        txt_address=ttk.Entry(upper_frame,width=22,font=('arial',11,'bold'))
+        txt_address=ttk.Entry(upper_frame,textvariable=self.var_address,width=22,font=('arial',11,'bold'))
         txt_address.grid(row=3,column=1,padx=2,pady=7)
 
         #Age
         lbl_age=Label(upper_frame,font=('arial',12,'bold'),text='Age:',bg='white')
         lbl_age.grid(row=3,column=2,padx=2,pady=7,sticky=W)
 
-        txt_age=ttk.Entry(upper_frame,width=22,font=('arial',11,'bold'))
+        txt_age=ttk.Entry(upper_frame,textvariable=self.var_age,width=22,font=('arial',11,'bold'))
         txt_age.grid(row=3,column=3,padx=2,pady=7)
 
         #Occupation
         lbl_occupation=Label(upper_frame,font=('arial',12,'bold'),text='Occupation:',bg='white')
         lbl_occupation.grid(row=4,column=0,padx=2,pady=7,sticky=W)
 
-        txt_occupation=ttk.Entry(upper_frame,width=22,font=('arial',11,'bold'))
+        txt_occupation=ttk.Entry(upper_frame,textvariable=self.var_occupation,width=22,font=('arial',11,'bold'))
         txt_occupation.grid(row=4,column=1,padx=2,pady=7)
 
         #Birth Mark
         lbl_birthMark=Label(upper_frame,font=('arial',12,'bold'),text='Birth Mark:',bg='white')
         lbl_birthMark.grid(row=4,column=2,padx=2,pady=7,sticky=W)
 
-        txt_birthMark=ttk.Entry(upper_frame,width=22,font=('arial',11,'bold'))
+        txt_birthMark=ttk.Entry(upper_frame,textvariable=self.var_birth_mark,width=22,font=('arial',11,'bold'))
         txt_birthMark.grid(row=4,column=3,padx=2,pady=7,sticky=W)
 
         #Crime Type
         lbl_crimeType=Label(upper_frame,font=('arial',12,'bold'),text='Crime Type:',bg='white')
         lbl_crimeType.grid(row=0,column=4,padx=2,pady=7,sticky=W)
 
-        txt_crimeType=ttk.Entry(upper_frame,width=22,font=('arial',11,'bold'))
+        txt_crimeType=ttk.Entry(upper_frame,textvariable=self.var_crime_type,width=22,font=('arial',11,'bold'))
         txt_crimeType.grid(row=0,column=5,padx=2,pady=7)
 
         #Father Name
         lbl_fatherName=Label(upper_frame,font=('arial',12,'bold'),text='Father Name:',bg='white')
         lbl_fatherName.grid(row=1,column=4,padx=2,pady=7,sticky=W)
 
-        txt_fatherName=ttk.Entry(upper_frame,width=22,font=('arial',11,'bold'))
+        txt_fatherName=ttk.Entry(upper_frame,textvariable=self.var_father_name,width=22,font=('arial',11,'bold'))
         txt_fatherName.grid(row=1,column=5,padx=2,pady=7)
-
-        #Gender
-        lbl_gender=Label(upper_frame,font=('arial',12,'bold'),text='Gender:',bg='white')
-        lbl_gender.grid(row=2,column=4,sticky=W,padx=2,pady=7)
-
-        #Wanted
-        lbl_wanted=Label(upper_frame,font=('arial',12,'bold'),text='Most Wanted:',bg='white')
-        lbl_wanted.grid(row=3,column=4,sticky=W,padx=2,pady=7)
 
         #Radio Button Gender
         radio_frame_gender=Label(upper_frame,bd=2,relief=RIDGE,bg='white')
         radio_frame_gender.place(x=730,y=83,width=185,height=25)
 
-        male=Radiobutton(radio_frame_gender,text='Male',value='male',font=('arial',9,'bold'),bg='white')
-        male.grid(row=0,column=0,pady=2,padx=5,sticky=W)
+        lbl_gender=Label(upper_frame,font=('arial',12,'bold'),text='Gender:',bg='white')
+        lbl_gender.grid(row=2,column=4,sticky=W,padx=2,pady=7)
 
-        female=Radiobutton(radio_frame_gender,text='Female',value='female',font=('arial',9,'bold'),bg='white')
+        male=Radiobutton(radio_frame_gender,variable=self.var_gender,text='Male',value='male',font=('arial',9,'bold'),bg='white')
+        male.grid(row=0,column=0,pady=2,padx=5,sticky=W)
+        self.var_gender.set('male')
+
+        female=Radiobutton(radio_frame_gender,variable=self.var_gender,text='Female',value='female',font=('arial',9,'bold'),bg='white')
         female.grid(row=0,column=1,pady=2,padx=5,sticky=W)
 
 
@@ -164,10 +179,14 @@ class Criminal:
         radio_frame_wanted=Label(upper_frame,bd=2,relief=RIDGE,bg='white')
         radio_frame_wanted.place(x=730,y=123,width=185,height=25)
 
-        yes=Radiobutton(radio_frame_wanted,text='Yes',value='yes',font=('arial',9,'bold'),bg='white')
-        yes.grid(row=0,column=0,pady=2,padx=5,sticky=W)
+        lbl_wanted=Label(upper_frame,font=('arial',12,'bold'),text='Most Wanted:',bg='white')
+        lbl_wanted.grid(row=3,column=4,sticky=W,padx=2,pady=7)
 
-        no=Radiobutton(radio_frame_wanted,text='No',value='no',font=('arial',9,'bold'),bg='white')
+        yes=Radiobutton(radio_frame_wanted,variable=self.var_wanted,text='Yes',value='yes',font=('arial',9,'bold'),bg='white')
+        yes.grid(row=0,column=0,pady=2,padx=5,sticky=W)
+        self.var_wanted.set('yes')
+
+        no=Radiobutton(radio_frame_wanted,variable=self.var_wanted,text='No',value='no',font=('arial',9,'bold'),bg='white')
         no.grid(row=0,column=1,pady=2,padx=5,sticky=W)
 
         #Button
@@ -175,7 +194,7 @@ class Criminal:
         button_frame.place(x=5,y=200,width=628,height=45)
 
         #Add Button
-        btn_add=Button(button_frame,text='Record Save',font=('arial',13,'bold'),width=14,bg='blue',fg='white')
+        btn_add=Button(button_frame,command=self.add_data,text='Record Save',font=('arial',13,'bold'),width=14,bg='blue',fg='white')
         btn_add.grid(row=0,column=0,padx=3,pady=5)
 
         #Update Button
@@ -287,6 +306,40 @@ class Criminal:
 
         self.criminal_table.pack(fill=BOTH,expand=1)
 
+
+    #Add Function
+    def add_data(self):
+        if self.var_case_id.get()=="":
+            messagebox.showerror("Error","All fields are required")
+        else:
+            try:
+                conn=sqlite3.connect("G:\Rimon Study\Criminal Management System\Database\CMS.db")
+                my_cursor=conn.cursor()
+                my_cursor.execute("insert into Criminal('Case ID','Criminal No','Criminal Name','Nickname','Arrest Date','Date of Crime','Address','Age','Occupation','Birth Mark','Crime Type','Father Name','Gender','Most Wanted')values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(
+                                                                                                           
+                                                                                                            self.var_case_id.get(),
+                                                                                                            self.var_criminal_no.get(),
+                                                                                                            self.var_name.get(),
+                                                                                                            self.var_nickname.get(),
+                                                                                                            self.var_arrest_date.get(),
+                                                                                                            self.var_date_of_crime.get(),
+                                                                                                            self.var_address.get(),
+                                                                                                            self.var_age.get(),
+                                                                                                            self.var_occupation.get(),
+                                                                                                            self.var_birth_mark.get(),
+                                                                                                            self.var_crime_type.get(),
+                                                                                                            self.var_father_name.get(),
+                                                                                                            self.var_gender.get(),
+                                                                                                            self.var_wanted.get()
+
+
+
+                                                                                                            ))
+                conn.commit()
+                conn.close()
+                messagebox.showinfo("Success","Criminal record has benn added")
+            except Exception as es:
+                messagebox.showerror("Error",f"Due to {str(es)}")
 
 
 
