@@ -198,15 +198,15 @@ class Criminal:
         btn_add.grid(row=0,column=0,padx=3,pady=5)
 
         #Update Button
-        btn_update=Button(button_frame,text='Update',font=('arial',13,'bold'),width=14,bg='blue',fg='white')
+        btn_update=Button(button_frame,command=self.update_data,text='Update',font=('arial',13,'bold'),width=14,bg='blue',fg='white')
         btn_update.grid(row=0,column=1,padx=3,pady=5)
 
         #Delete Button
-        btn_delete=Button(button_frame,text='Delete',font=('arial',13,'bold'),width=14,bg='blue',fg='white')
+        btn_delete=Button(button_frame,command=self.delete_data,text='Delete',font=('arial',13,'bold'),width=14,bg='blue',fg='white')
         btn_delete.grid(row=0,column=2,padx=3,pady=5)
 
         #Clear Button
-        btn_clear=Button(button_frame,text='Clear',font=('arial',13,'bold'),width=14,bg='blue',fg='white')
+        btn_clear=Button(button_frame,command=self.clear_data,text='Clear',font=('arial',13,'bold'),width=14,bg='blue',fg='white')
         btn_clear.grid(row=0,column=3,padx=3,pady=5)
 
         #Background right side 
@@ -273,7 +273,7 @@ class Criminal:
 
         #Table header
         self.criminal_table.heading('1',text='Case ID')
-        self.criminal_table.heading('2',text='Crime No')
+        self.criminal_table.heading('2',text='Criminal No')
         self.criminal_table.heading('3',text='Criminal Name')
         self.criminal_table.heading('4',text='Nickname')
         self.criminal_table.heading('5',text='Arrest Date')
@@ -306,6 +306,10 @@ class Criminal:
 
         self.criminal_table.pack(fill=BOTH,expand=1)
 
+        self.criminal_table.bind("<ButtonRelease>",self.get_cursor)
+
+        self.fetch_data()
+
 
     #Add Function
     def add_data(self):
@@ -315,7 +319,7 @@ class Criminal:
             try:
                 conn=sqlite3.connect("G:\Rimon Study\Criminal Management System\Database\CMS.db")
                 my_cursor=conn.cursor()
-                my_cursor.execute("insert into Criminal('Case ID','Criminal No','Criminal Name','Nickname','Arrest Date','Date of Crime','Address','Age','Occupation','Birth Mark','Crime Type','Father Name','Gender','Most Wanted')values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(
+                my_cursor.execute("insert into Criminal('Case_ID','Criminal_No','Criminal_Name','Nickname','Arrest_Date','Date_of_Crime','Address','Age','Occupation','Birth_Mark','Crime_Type','Father_Name','Gender','Most_Wanted')values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(
                                                                                                            
                                                                                                             self.var_case_id.get(),
                                                                                                             self.var_criminal_no.get(),
@@ -332,14 +336,133 @@ class Criminal:
                                                                                                             self.var_gender.get(),
                                                                                                             self.var_wanted.get()
 
-
-
                                                                                                             ))
                 conn.commit()
+                self.fetch_data()
+                self.clear_data()
                 conn.close()
                 messagebox.showinfo("Success","Criminal record has benn added")
             except Exception as es:
                 messagebox.showerror("Error",f"Due to {str(es)}")
+
+
+    #Fetch Data
+    def fetch_data(self):
+        conn=sqlite3.connect("G:\Rimon Study\Criminal Management System\Database\CMS.db")
+        my_cursor=conn.cursor()
+        my_cursor.execute('select * from Criminal')
+        data=my_cursor.fetchall()
+        if len(data)!=0:
+            self.criminal_table.delete(*self.criminal_table.get_children())
+            for i in data:
+                self.criminal_table.insert('',END,values=i)
+            conn.commit()
+        conn.close()
+
+
+    #Get Cursor
+    def get_cursor(self,event=""):
+        cursor_row=self.criminal_table.focus()
+        content=self.criminal_table.item(cursor_row)
+        data=content['values']
+
+        self.var_case_id.set(data[0])
+        self.var_criminal_no.set(data[1])
+        self.var_name.set(data[2])
+        self.var_nickname.set(data[3])
+        self.var_arrest_date.set(data[4])
+        self.var_date_of_crime.set(data[5])
+        self.var_address.set(data[6])
+        self.var_age.set(data[7])
+        self.var_occupation.set(data[8])
+        self.var_birth_mark.set(data[9])
+        self.var_crime_type.set(data[10])
+        self.var_father_name.set(data[11])
+        self.var_gender.set(data[12])
+        self.var_wanted.set(data[13])
+
+
+    #Update
+    def update_data(self):
+        if self.var_case_id.get()=="":
+            messagebox.showerror("Error","All fields are required")
+        else:
+            try:
+                update=messagebox.askyesno("Update","Are you sure update this criminal record")
+                if update>0:
+                    conn=sqlite3.connect("G:\Rimon Study\Criminal Management System\Database\CMS.db")
+                    my_cursor=conn.cursor()
+                    my_cursor.execute("update Criminal set Criminal_No=?,Criminal_Name=?,Nickname=?,Arrest_Date=?,Date_of_Crime=?,Address=?,Age=?,Occupation=?,Birth_Mark=?,Crime_Type=?,Father_Name=?,Gender=?,Most_Wanted=? WHERE Case_ID=? " ,(
+
+                                                                                                                                                                                                                                                self.var_criminal_no.get(),
+                                                                                                                                                                                                                                                self.var_name.get(),
+                                                                                                                                                                                                                                                self.var_nickname.get(),
+                                                                                                                                                                                                                                                self.var_arrest_date.get(),
+                                                                                                                                                                                                                                                self.var_date_of_crime.get(),
+                                                                                                                                                                                                                                                self.var_address.get(),
+                                                                                                                                                                                                                                                self.var_age.get(),
+                                                                                                                                                                                                                                                self.var_occupation.get(),
+                                                                                                                                                                                                                                                self.var_birth_mark.get(),
+                                                                                                                                                                                                                                                self.var_crime_type.get(),
+                                                                                                                                                                                                                                                self.var_father_name.get(),
+                                                                                                                                                                                                                                                self.var_gender.get(),
+                                                                                                                                                                                                                                                self.var_wanted.get(),
+                                                                                                                                                                                                                                                self.var_case_id.get(),
+
+                                                                                                                                                                                                                                                ))
+                else:
+                    if not update:
+                        return
+                conn.commit()
+                self.fetch_data()
+                self.clear_data()
+                conn.close()
+                messagebox.showinfo("Success","Crminal record has been successfully updated")
+            except Exception as es:
+                messagebox.showerror("Error",f"Due to {str(es)}")
+
+
+    #Delete
+    def delete_data(self):
+        if self.var_case_id.get()=="":
+            messagebox.showerror("Error","All fields are required")
+        else:
+            try:
+                delete=messagebox.askyesno("Delete","Are you sure delete this criminal record")
+                if delete>0:
+                    conn=sqlite3.connect("G:\Rimon Study\Criminal Management System\Database\CMS.db")
+                    my_cursor=conn.cursor()
+                    sql="delete from Criminal where Case_ID=?"
+                    value=(self.var_case_id.get(),)
+                    my_cursor.execute(sql,value)
+                else:
+                    if not delete:
+                        return
+                conn.commit()
+                self.fetch_data()
+                self.clear_data()
+                conn.close()
+                messagebox.showinfo("Success","Crminal record has been successfully deleted")
+            except Exception as es:
+                messagebox.showerror("Error",f"Due to {str(es)}")
+
+
+    #Clear Data
+    def clear_data(self):
+        self.var_case_id.set("")
+        self.var_criminal_no.set("")
+        self.var_name.set("")
+        self.var_nickname.set("")
+        self.var_arrest_date.set("")
+        self.var_date_of_crime.set("")
+        self.var_address.set("")
+        self.var_age.set("")
+        self.var_occupation.set("")
+        self.var_birth_mark.set("")
+        self.var_crime_type.set("")
+        self.var_father_name.set("")
+        self.var_gender.set("")
+        self.var_wanted.set("")
 
 
 
