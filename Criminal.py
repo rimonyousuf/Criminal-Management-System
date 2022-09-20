@@ -234,21 +234,23 @@ class Criminal:
         search_by.grid(row=0,column=0,sticky=W,padx=5)
 
         #Combo Search Box
-        cmbo_bx=ttk.Combobox(search_frame,font=('arial',11,'bold'),width=18,state='readonly')
-        cmbo_bx['value']=('Select Option','Case ID','Criminal No')
+        self.var_com_search=StringVar()
+        cmbo_bx=ttk.Combobox(search_frame,textvariable=self.var_com_search,font=('arial',11,'bold'),width=18,state='readonly')
+        cmbo_bx['value']=('Select Option','Case_ID','Criminal_No')
         cmbo_bx.current(0)
         cmbo_bx.grid(row=0,column=1,sticky=W,padx=5)
 
         #Search Box
-        search_txt=ttk.Entry(search_frame,font=('arial',11,'bold'))
+        self.var_search=StringVar()
+        search_txt=ttk.Entry(search_frame,textvariable=self.var_search,width=18,font=('arial',11,'bold'))
         search_txt.grid(row=0,column=2,sticky=W,padx=5)
 
         #Search Button
-        btn_search=Button(search_frame,text='Search',font=('arial',13,'bold'),width=14,bg='blue',fg='white')
+        btn_search=Button(search_frame,command=self.search_data,text='Search',font=('arial',13,'bold'),width=14,bg='blue',fg='white')
         btn_search.grid(row=0,column=3,padx=3,pady=5)
 
         #All Button
-        btn_all=Button(search_frame,text='Show All',font=('arial',13,'bold'),width=14,bg='blue',fg='white')
+        btn_all=Button(search_frame,command=self.fetch_data,text='Show All',font=('arial',13,'bold'),width=14,bg='blue',fg='white')
         btn_all.grid(row=0,column=4,padx=3,pady=5)
 
         #National Crime Agency
@@ -392,7 +394,7 @@ class Criminal:
                 if update>0:
                     conn=sqlite3.connect("G:\Rimon Study\Criminal Management System\Database\CMS.db")
                     my_cursor=conn.cursor()
-                    my_cursor.execute("update Criminal set Criminal_No=?,Criminal_Name=?,Nickname=?,Arrest_Date=?,Date_of_Crime=?,Address=?,Age=?,Occupation=?,Birth_Mark=?,Crime_Type=?,Father_Name=?,Gender=?,Most_Wanted=? WHERE Case_ID=? " ,(
+                    my_cursor.execute("update Criminal set Criminal_No=?,Criminal_Name=?,Nickname=?,Arrest_Date=?,Date_of_Crime=?,Address=?,Age=?,Occupation=?,Birth_Mark=?,Crime_Type=?,Father_Name=?,Gender=?,Most_Wanted=? WHERE Case_ID=?" ,(
 
                                                                                                                                                                                                                                                 self.var_criminal_no.get(),
                                                                                                                                                                                                                                                 self.var_name.get(),
@@ -463,6 +465,27 @@ class Criminal:
         self.var_father_name.set("")
         self.var_gender.set("")
         self.var_wanted.set("")
+
+
+    #Search Data
+    def search_data(self):
+        if self.var_com_search.get()=="":
+            messagebox.showerror("Error","All fields are required")
+        else:
+            try:
+                conn=sqlite3.connect("G:\Rimon Study\Criminal Management System\Database\CMS.db")
+                my_cursor=conn.cursor()
+                my_cursor.execute("select * from Criminal where " +str(self.var_com_search.get())+" LIKE'%"+str(self.var_search.get()+"%'"))
+                rows=my_cursor.fetchall()
+                if len(rows)!=0:
+                    self.criminal_table.delete(*self.criminal_table.get_children())
+                    for i in rows:
+                        self.criminal_table.insert('',END,values=i)
+                conn.commit()
+                conn.close()
+            except Exception as es:
+                messagebox.showerror("Error",f"Due to {str(es)}")
+        
 
 
 
